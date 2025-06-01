@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 import json
 from typing import Dict, List, Tuple, Optional
 import re
@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # Configuration OpenAI
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Style CSS personnalisé
 st.markdown("""
@@ -207,7 +207,7 @@ Analyse cette demande et réponds au format JSON suivant:
 Sois précis et ne recommande que les prestations vraiment pertinentes."""
 
         try:
-            response = openai.ChatCompletion.create(
+            response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3,
